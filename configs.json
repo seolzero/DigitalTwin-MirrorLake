@@ -1,0 +1,21 @@
+{
+   "digitalbrain": {"ip": "localhost", "port": "1005"},
+   "redis": { "ip": "localhost", "port": "6379" },
+   "mqtt": { "ip": "localhost", "port": "1883" },
+   "kafka": { "ip": "localhost", "port": "9092" },
+   "kafkaHost": "172.20.175.144:9092",
+   "kafkaconnectHost": "172.20.175.144:8083",
+   "kafkaConnectServer": { "hostname": "", "port": "", "path": "" },
+   "ksqlOptions": {
+      "hostname": "localhost",
+      "port": 8088,
+      "headers": {
+         "Content-Type": "application/vnd.ksql.v1+json",
+         "Accept": "application/vnd.ksql.v1+json"
+      }
+   },
+   "gwOptions" : {
+      "hostname": "172.20.175.144",
+      "port": 8087
+   }
+}

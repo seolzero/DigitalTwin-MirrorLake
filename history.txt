@@ -1,0 +1,715 @@
+    1  wget https://github.com/lensesio/stream-reactor/releases/download/x.x.x/stream-reactor-x.x.x-x.x.x.tar.gz
+    2  wget https://github.com/lensesio/stream-reactor/releases/download/1.2.7/stream-reactor-1.2.7-2.1.0.tar.gz
+    3  wget https://www.apache.org/dyn/closer.cgi?path=/kafka/3.1.0/kafka_2.12-3.1.0.tgz
+    4  ls
+    5  cd '
+    6  ls
+    7  ls -al
+    8  rm 'closer.cgi?path=%2Fkafka%2F3.1.0%2Fkafka_2.12-3.1.0.tgz' 
+    9  ls
+   10  java
+   11  sudo apt-get install openjdk-8-jre
+   12  java -version
+   13  sudo apt update
+   14  sudo apt install openjdk-8-jdk
+   15  java -version
+   16  sudo vi /etc/environment 
+   17  source /etc/environment 
+   18  echo $JAVA_HOME
+   19  pwd
+   20  cd /opt/
+   21  ls
+   22  pwd
+   23  wget https://downloads.apache.org/kafka/2.7.1/kafka_2.11-2.0.0.tgz
+   24  wget https://downloads.apache.org/kafka/2.11/kafka_2.11-2.0.0.tgz
+   25  wget https://downloads.apache.org/kafka/2.0.0/kafka_2.11-2.0.0.tgz
+   26  wget https://archive.apache.org/dist/kafka/2.0.0/kafka_2.11-2.0.0.tgz
+   27  ls
+   28  sdo wget https://archive.apache.org/dist/kafka/2.0.0/kafka_2.11-2.0.0.tgz
+   29  sudo wget https://archive.apache.org/dist/kafka/2.0.0/kafka_2.11-2.0.0.tgz
+   30  ls
+   31  sudo apt-get update
+   32  java -version
+   33  ls
+   34  ls -rtl
+   35  tar -xvzf flink-1.14.4-bin-scala_2.11.tgz flink-1.14.4/
+   36  ls
+   37  cd flink-1.14.4/
+   38  ls
+   39  vi conf/flink-conf.yaml 
+   40  cd conf/
+   41  ls
+   42  vi masters 
+   43  vi workers 
+   44  cd ../
+   45  ls
+   46  cd bin
+   47  ls
+   48  start-cluster.sh
+   49  cd ../
+   50  ls
+   51  ps -ef | grep flink
+   52  ps -ef | grep flink | wc -l
+   53  cd ../
+   54  ls
+   55  ps -ef
+   56  jps
+   57  kill -9 6606
+   58  jps
+   59  kill -9 6923
+   60  ls
+   61  rm -rf flink-1.14.4
+   62  ls
+   63  ls*
+   64  rm -rf flink-1.14.4*
+   65  ls
+   66  wget https://github.com/ververica/flink-sql-gateway/archive/refs/tags/flink-1.12.0.tar.gz
+   67  ls
+   68  tar -xvzf flink-1.12.0.tar.gz 
+   69  ls
+   70  wget https://archive.apache.org/dist/flink/flink-1.12.0/flink-1.12.0-bin-scala_2.11.tgz
+   71  ls
+   72  tar -xvzf flink-1.12.0-bin-scala_2.11.tgz 
+   73  ls
+   74  wget https://dl.influxdata.com/influxdb/releases/influxdb2-2.1.1-linux-amd64.tar.gz
+   75  ls
+   76  tar -xvzf influxdb2-2.1.1-linux-amd64.tar.gz 
+   77  ls
+   78  cd influxdb2-2.1.1-linux-amd64/
+   79  ls
+   80  cd ../
+   81  ls
+   82  pwd
+   83  cd flink-1.12.0/
+   84  ls
+   85  ./bin/start-cluster.sh 
+   86  jps
+   87  export FLINK_HOME=/home/cotlab/flink-1.12.0
+   88  cd ../
+   89  cd flink-sql-gateway-flink-1.12.0/
+   90  ls
+   91  ./bin/sql-gateway.sh 
+   92  ls
+   93  cd conf/
+   94  ls
+   95  vi sql-gateway-defaults.yaml 
+   96  vi ~/.bashrc 
+   97  vi ~/
+   98  cd ~/
+   99  ls
+  100  jps
+  101  cd flink-sql-gateway-flink-1.12.0/
+  102  ls
+  103  vi pom.xml 
+  104  mvn package
+  105  sudo apt install maven
+  106  mvn package
+  107  ./bin/sql-gateway.sh 
+  108  ls
+  109  cd target/
+  110  ls
+  111  echo $FLINK_HOME
+  112  cd ../..
+  113  ls
+  114  jps
+  115  cd flink-1.12.0/
+  116  ls
+  117  ls bin/
+  118  vim ~/.bashrc 
+  119  pwd
+  120  vim ~/.bashrc 
+  121  source ~/.bashrc
+  122  cd ..
+  123  ls
+  124  cd flink-sql-gateway-flink-1.12.0/
+  125  ls
+  126  cd target
+  127  ls
+  128  cd ..
+  129  cd build-target/
+  130  ls
+  131  bin/sql-gateway.sh 
+  132  vim conf/sql-gateway-defaults.yaml 
+  133  ssh 10.252.73.37
+  134  ssh cotlab@10.252.73.37
+  135  vim conf/sql-gateway-defaults.yaml 
+  136  bin/sql-gateway.sh 
+  137  vim conf/sql-gateway-defaults.yaml 
+  138  bin/sql-gateway.sh 
+  139  vim conf/sql-gateway-defaults.yaml 
+  140  ssh cotlab@10.252.73.37
+  141  vim conf/sql-gateway-defaults.yaml 
+  142  bin/sql-gateway.sh 
+  143  jps
+  144  bin/sql-gateway.sh 
+  145  jps
+  146  vim conf/sql-gateway-defaults.yaml 
+  147  bin/sql-gateway.sh 
+  148  cd ../..
+  149  jps
+  150  cd flink-1.12.0/
+  151  ls
+  152  vim conf/sql-client-defaults.yaml 
+  153  vim conf/flink-conf.yaml 
+  154  jps
+  155  kill -9 8045
+  156  kill -9 7729
+  157  jps
+  158  ls
+  159  cd bin
+  160  ls
+  161  ./start-cluster.sh 
+  162  jps
+  163  ssh cotlab@10.252.73.37
+  164  ls
+  165  cd ..
+  166  ls
+  167  ls conf/
+  168  vim conf/masters 
+  169  vim conf/workers 
+  170  vim conf/flink-conf.yaml 
+  171  ssh cotlab@10.252.73.37
+  172  ls
+  173  vim conf/flink-conf.yaml 
+  174  cd ..
+  175  ls
+  176  cd flink-sql-gateway-flink-1.12.0/
+  177  cd build-target
+  178  ls conf/sql-gateway-defaults.yaml 
+  179  vim conf/sql-gateway-defaults.yaml 
+  180  jps
+  181  kill -9 13033
+  182  kill -9 12582
+  183  jps
+  184  cd ../..
+  185  cd flink-1.12.0/
+  186  ls
+  187  bin/start-cluster.sh 
+  188  jps
+  189  cd ../flink-sql-gateway-flink-1.12.0/
+  190  ls
+  191  cd build-target
+  192  ls
+  193  bin/sql-gateway.sh 
+  194  cd .
+  195  cd ..
+  196  mvn clean package -DskipTests
+  197  cd build-target
+  198  bin/sql-gateway.sh 
+  199  ls
+  200  cd ../
+  201  ls
+  202  cd ../
+  203  ls
+  204  cd ../
+  205  ls
+  206  cd cotlab/
+  207  ls
+  208  rm -rf influx*
+  209  ls
+  210  cd flink-sql-gateway-flink-1.12.0/
+  211  ls
+  212  cd build-target
+  213  ls
+  214  bin/
+  215  ls
+  216  ls bin/
+  217  ifconfig
+  218  bin/sql-gateway.sh 
+  219  jps
+  220  cd ../../
+  221  ls
+  222  wget https://archive.apache.org/dist/kafka/2.0.0/kafka_2.11-2.0.0.tgz
+  223  ls
+  224  tar -xvzf kafka_2.11-2.0.0.tgz 
+  225  ls
+  226  cd kafka_2.11-2.0.0/
+  227  ls
+  228  cd bin/
+  229  ls
+  230  cd ../
+  231  ls
+  232  cd config/
+  233  ls
+  234  vi server.properties 
+  235  ls
+  236  vi connect-distributed.properties 
+  237  cd../../
+  238  cd ../../
+  239  pwd
+  240  ls
+  241  git clone https://github.com/seollendar/MirrorLake.git
+  242  wget https://github.com/seollendar/MirrorLake/archive/refs/heads/master.zip
+  243  git clone https://github.com/seollendar/MirrorLake.git
+  244  ls
+  245  upzip MirrorLake-master.zip
+  246  sudo apt-get install zip unzip
+  247  upzip MirrorLake-master.zip
+  248  unzip MirrorLake-master.zip
+  249  ls
+  250  cd MirrorLake-master/
+  251  ls
+  252  cd bin
+  253  ls
+  254  cd ../
+  255  ls
+  256  cd target/
+  257  ls
+  258  pwd
+  259  cd ../../
+  260  ls
+  261  cd kafka_2.11-2.0.0/
+  262  ls
+  263  vi config/connect-distributed.properties 
+  264  jps
+  265  kill -9 19756
+  266  kill -9 20072
+  267  jps
+  268  bin/zookeeper-server-start.sh -daemon ./config/zookeeper.properties 
+  269  jps
+  270  bin/kafka-server-start.sh -daemon ./config/server.properties 
+  271  jps
+  272  bin/connect-distributed.sh ./config/connect-distributed.properties 
+  273  jps
+  274  ssh cotlab@10.252.73.37
+  275  jps
+  276  kill -9 26089
+  277  jps
+  278  jps
+  279  kill -9 27312
+  280  kill -9 25506
+  281  jps
+  282  kill -9 27175
+  283  kill -9 25897
+  284  jps
+  285  cd logs/
+  286  ls
+  287  rm -rf *
+  288  ls
+  289  cd /tmp
+  290  cd kafka-logs/
+  291  ls
+  292  rm -rf *
+  293  ls
+  294  cd ../zookeeper/
+  295  ls
+  296  cd version-2/
+  297  ls
+  298  rm *
+  299  ls
+  300  cd ../../../
+  301  ls
+  302  jps
+  303  cd kafka_2.11-2.0.0/
+  304  ./bin/kafka-console-producer.sh --topic ssul --bootstrap-server 172.26.242.250:9092
+  305  ./bin/kafka-console-producer.sh --topic ssul --broker-list 172.26.242.250:9092
+  306  ./bin/kafka-topics.sh --list --zookeeper localhost:2181
+  307  ./bin./kafka-console-consumer.sh --topic ssul --bootstrap-server localhost:9092 --from-beginning
+  308  ./bin/kafka-console-consumer.sh --topic ssul --bootstrap-server localhost:9092 --from-beginning
+  309  ./bin/kafka-console-producer.sh --topic ssul --broker-list 172.26.242.250:9092
+  310  ./bin/kafka-console-consumer.sh --topic ssul --bootstrap-server localhost:9092 --from-beginning
+  311  ./bin/kafka-topics.sh --describe --zookeeper localhost:2181 --topic ssl
+  312  ./bin/kafka-topics.sh --describe --zookeeper localhost:2181 --topic ssul
+  313  vi /etc/hosts
+  314  sudo vi /etc/hosts
+  315  jps
+  316  kill -9 6596
+  317  kill -9 3539
+  318  jps
+  319  rm - rf ./logs/*
+  320  cd logs/
+  321  rm -rf *
+  322  lks
+  323  ls
+  324  rm -rf /tmp/kafka-logs/*
+  325  rm -rf /tmp/zookeeper/version-2/*
+  326  cd ../
+  327  ./bin/zookeeper-server-start.sh ./config/zookeeper.properties 
+  328  ./bin/zookeeper-server-start.sh -daemon ./config/zookeeper.properties 
+  329  ./bin/kafka-server-start.sh -daemon ./config/server.properties 
+  330  jps
+  331  ./bin/kafka-console-producer.sh --topic ssul --broker-list 172.26.242.250:9092
+  332  ./bin/kafka-console-consumer.sh --topic ssul --bootstrap-server localhost:9092 --from-beginning
+  333  ./bin/connect-distributed.sh ./config/connect-distributed.properties 
+  334  jps
+  335  ./bin/connect-distributed.sh ./config/connect-distributed.properties 
+  336  jps
+  337  ./bin/connect-distributed.sh ./config/connect-distributed.properties 
+  338  jps
+  339  kill -9 18678
+  340  kill -9 18326
+  341  kill -9 56280
+  342  kill -9 5280
+  343  kill -9 5143
+  344  kill -9 4827
+  345  jps
+  346  ./bin/connect-distributed.sh ./config/connect-distributed.properties 
+  347  jps
+  348  kill -9 22895
+  349  kill -9 23211
+  350  kill -9 21926
+  351  jps
+  352  rm -rf ./logs/*
+  353  rm -rf /tmp/kafka-logs/*
+  354  rm -rf /tmp/zookeeper/version-2/*
+  355  jps
+  356  ssh cotlab@10.252.73.37
+  357  ls
+  358  wget https://github.com/lensesio/stream-reactor/archive/refs/tags/1.2.7.tar.gz
+  359  ls
+  360  tar -xvzf stream-reactor-1.2.7-2.1.0.tar.gz 
+  361  ls
+  362  cd stream-reactor-1.2.7-2.1.0/
+  363  ls
+  364  cd libs/
+  365  ls
+  366  pwd
+  367  cd ../
+  368  vi kafka_2.11-2.0.0/config/connect-distributed.properties 
+  369  jps
+  370  kill -9 27515
+  371  cd flink-1.12.0/
+  372  ls
+  373  ./bin/start-cluster.sh 
+  374  jps
+  375  cd ../kafka_2.11-2.0.0/
+  376  cd bin
+  377  .\kafka-topics.bat --bootstrap-server localhost:9092 --list
+  378  ls
+  379  .\kafka-topic.sh --bootstrap-server localhost:9092 --list
+  380  .\kafka-topics.sh --bootstrap-server localhost:9092 --list
+  381  ./kafka-topics.sh --bootstrap-server localhost:9092 --list
+  382  ./kafka-topics.sh --zookeeper localhost:9092 --list
+  383  ./kafka-topics.sh --list
+  384  ./kafka-topics.sh --list --zookeeper localhost:2181
+  385  .\kafka-console-producer.sh --topic DO_DOte6 --bootstrap-server localhost:9092
+  386  ./kafka-console-consumer.sh --topic DO_DOte8 --from-beginning --bootstrap-server localhost:9092
+  387  ls
+  388  cd ../config/
+  389  ls
+  390  vi connect-distributed.properties 
+  391  cd ../
+  392  jps
+  393  cd  ./
+  394  cd ../
+  395  ks
+  396  ls
+  397  cd flink-
+  398  cd flink-1.12.0/
+  399  ls
+  400  ./bin/start-cluster.sh 
+  401  cd ../kafka_2.11-2.0.0/
+  402  .bin\kafka-topics.sh --zookeeper localhost:9092 --list
+  403  ./bin/kafka-topics.sh --zookeeper localhost:9092 --list
+  404  ./bin/kafka-topics.sh --zookeeper localhost:2181 --list
+  405  .\kafka-console-consumer.sh --topic connect-test -- DO_DOte7 --bootstrap-server localhost:9092
+  406  cd bin
+  407  .\kafka-console-consumer.sh --topic connect-test -- DO_DOte7 --bootstrap-server localhost:9092
+  408  ./kafka-console-consumer.sh --topic DO_DOte7 --bootst
+  409  ./kafka-console-consumer.sh --topic DO_DOte7 --bootstrap-server localhost:9092 --from-beginning
+  410  ./bin/kafka-topics.sh --zookeeper localhost:2181 --list
+  411  /kafka-topics.sh --zookeeper localhost:2181 --list
+  412  ./kafka-topics.sh --zookeeper localhost:2181 --list
+  413  jps
+  414  kill -9 32265
+  415  kill -9 32581
+  416  kill -9 31332
+  417  kill -9 30945
+  418  jps
+  419  cd ../]
+  420  cd ../
+  421  ls
+  422  cd logs/
+  423  ls
+  424  rm -rf *
+  425  cd /tmp
+  426  ls
+  427  cd kafka-logs/
+  428  ls
+  429  rm -rf *
+  430  ls
+  431  cd ../zookeeper/
+  432  ls
+  433  cd version-2/
+  434  ls
+  435  rm *
+  436  jps
+  437  cd ../../
+  438  cd ../
+  439  ls
+  440  cd home/cotlab/kafka_2.11-2.0.0/
+  441  ls
+  442  ./bin/zookeeper-server-start.sh ./config/zookeeper.properties 
+  443  ./bin/zookeeper-server-start.sh -daemon ./config/zookeeper.properties 
+  444  jps
+  445  ./bin/kafka-server-start.sh -daemon ./config/server.properties 
+  446  jps
+  447  ./bin/connect-distributed.sh ./config/connect-distributed.properties 
+  448  ./bin/kafka-topics.sh --zookeeper localhost:2181 --list
+  449  ./bin/kafka-topics.sh --zookeeper 192.168.1.25:2181 --list
+  450  ifconfig
+  451  ./bin/kafka-topics.sh --zookeeper 172.26.242.250:2181 --list
+  452  vi ./config/server.properties 
+  453  jps
+  454  ./bin/connect-distributed.sh ./config/connect-distributed.properties 
+  455  jps
+  456  ./bin/connect-distributed.sh ./config/connect-distributed.properties 
+  457  jps
+  458  ./bin/kafka-topics.sh --zookeeper 172.26.242.250:2181 --list
+  459  ./bin/kafka-console-producer.sh --topic ssul2 --bootstrap-server localhost:9092
+  460  ./bin/kafka-console-producer.sh --topic ssul2
+  461  ./bin/kafka-console-producer.sh --topic ssul2 --broker-list localhost:9092
+  462  ./bin./kafka-console-consumer.sh --topic DO_DOte7 --bootstrap-server localhost:9092 --from-beginning
+  463  ./bin/kafka-console-consumer.sh --topic DO_DOte7 --bootstrap-server localhost:9092 --from-beginning
+  464  ./bin/kafka-console-consumer.sh --topic ssul2 --bootstrap-server localhost:9092 --from-beginning
+  465  ./bin/kafka-topics.sh --zookeeper 172.26.242.250:2181 --list
+  466  ./bin/kafka-console-consumer.sh --topic DO_DOtes1 --bootstrap-server localhost:9092 --from-beginning
+  467  ./bin/kafka-topics.sh --zookeeper 172.26.242.250:2181 --list
+  468  jps
+  469  kill -9 12762
+  470  kill -9 12406
+  471  jps
+  472  rm -rf ./logs/*
+  473  rm -rf /tmp/kafka-logs/*
+  474  rm -rf /tmp/zookeeper/version-2/*
+  475  jps\
+  476  jps
+  477  ./bin/zookeeper-server-start.sh -daemon ./config/zookeeper.properties 
+  478  ./bin/kafka-server-start.sh -daemon ./config/server.properties 
+  479  jps
+  480  ./bin/zookeeper-server-start.sh -daemon ./config/zookeeper.properties 
+  481  ./bin/kafka-server-start.sh -daemon ./config/server.properties 
+  482  jps
+  483  cd ../flink-1.12.0/
+  484  ./bin/start-cluster.sh 
+  485  jps
+  486  kill -9 21787
+  487  kill -9 21435
+  488  jps
+  489  cd ../kafka_2.11-2.0.0/
+  490  rm -rf ./logs/*
+  491  rm -rf /tmp/kafka-logs/*
+  492  rm -rf /tmp/zookeeper/version-2/*
+  493  ./bin/zookeeper-server-start.sh -daemon ./config/zookeeper.properties 
+  494  ./bin/kafka-server-start.sh -daemon ./config/server.properties 
+  495  jps
+  496  kill -9 24166
+  497  kill -9 23814
+  498  jps
+  499  jp
+  500  jps
+  501  ./bin/kafka-server-start.sh -daemon ./config/server.properties 
+  502  jps
+  503  ./bin/zookeeper-server-start.sh -daemon ./config/zookeeper.properties 
+  504  ./bin/kafka-server-start.sh -daemon ./config/server.properties 
+  505  jps
+  506  ./bin/kafka-topics.sh --zookeeper 172.26.242.250:2181 --list
+  507  ./bin/kafka-console-consumer.sh --topic SIM_simtes8 --bootstrap-server localhost:9092 --from-beginning
+  508  ./bin/kafka-topics.sh --zookeeper 172.26.242.250:2181 --list
+  509  ./bin/kafka-console-consumer.sh --topic DO_DOtes8 --bootstrap-server localhost:9092 --from-beginning
+  510  cd flink-k
+  511  ls
+  512  jps
+  513  cd flink-1.12.0/
+  514  ls
+  515  ls bin/
+  516  cd ..
+  517  ls
+  518  cd flink-sql-gateway-flink-1.12.0/
+  519  ls
+  520  ls conf/
+  521  vim conf/sql-gateway-defaults.yaml 
+  522  mvn clean package -DskipTests
+  523  ls
+  524  cd build-target
+  525  ls
+  526  vim conf/sql-gateway-defaults.yaml 
+  527  bin/sql-gateway.sh 
+  528  vim conf/sql-gateway-defaults.yaml 
+  529  bin/sql-gateway.sh 
+  530  vim conf/sql-gateway-defaults.yaml 
+  531  bin/sql-gateway.sh 
+  532  vim conf/sql-gateway-defaults.yaml 
+  533  cd ../
+  534  ls
+  535  vim conf/sql-gateway-defaults.yaml 
+  536  bin/sql-gateway.sh 
+  537  ls
+  538  cd build-target
+  539  bin/sql-gateway.sh 
+  540  jps
+  541  kill -9 14652
+  542  bin/sql-gateway.sh 
+  543  ifconfig
+  544  cd ../
+  545  bin/sql-gateway.sh 
+  546  vim conf/sql-gateway-defaults.yaml 
+  547  cd build-target
+  548  vim conf/sql-gateway-defaults.yaml 
+  549  bin/sql-gateway.sh 
+  550  vim conf/sql-gateway-defaults.yaml 
+  551  ifconfig
+  552  vim conf/sql-gateway-defaults.yaml 
+  553  bin/sql-gateway.sh 
+  554  vim conf/sql-gateway-defaults.yaml 
+  555  cd ../../
+  556  ls
+  557  cd flink-1.12.0/
+  558  ls
+  559  vi conf/flink-conf.yaml 
+  560  jps
+  561  kill -9 14153
+  562  kill -9 13837
+  563  ls
+  564  cd bin
+  565  ls
+  566  ./start-cluster.sh 
+  567  cd ../../
+  568  ls
+  569  cd flink-sql-gateway-flink-1.12.0/build-target
+  570  ls
+  571  ./bin/sql-gateway.sh 
+  572  cd ../..
+  573  ls
+  574  wget https://repo.maven.apache.org/maven2/org/apache/flink/flink-sql-connector-kafka_2.11/1.12.7/flink-sql-connector-kafka_2.11-1.12.7.jar
+  575  ls
+  576  rm -rf flink-sql-connector-kafka_2.11-1.12.7.jar 
+  577  cd flink-1.12.0/
+  578  ls
+  579  cd lib
+  580  ls
+  581  wget https://repo.maven.apache.org/maven2/org/apache/flink/flink-sql-connector-kafka_2.11/1.12.7/flink-sql-connector-kafka_2.11-1.12.7.jar
+  582  cd ..
+  583  bin/stop-cluster.sh 
+  584  bin/start-cluster.sh 
+  585  ssh cotlab@10.252.73.37
+  586  cd ..ls
+  587  ls
+  588  cd bin
+  589  ls
+  590  cd ../
+  591  cd lib
+  592  ls
+  593  cd ..
+  594  history
+  595  ls
+  596  cd conf/
+  597  ls
+  598  vi flink-conf.yaml 
+  599  jps
+  600  kill -9 18376
+  601  kill -9 18692
+  602  jps
+  603  cd ../
+  604  ls
+  605  bin/start-cluster.sh 
+  606  jps
+  607  ssh test@10.252.73.37
+  608  ssh cotlab@10.252.73.37
+  609  ls
+  610  bin/start-cluster.sh 
+  611  jps
+  612  cd ../
+  613  ls
+  614  cd flink-sql-gateway-flink-1.12.0/
+  615  bin/sql-gateway.sh 
+  616  ls
+  617  cd build-target
+  618  bin/sql-gateway.sh 
+  619  jps
+  620  bin/sql-gateway.sh 
+  621  ./bin/sql-gateway.sh 
+  622  jps
+  623  ifconfig
+  624  jps
+  625  history
+  626  jps
+  627  cd kafka_2.11-2.0.0/
+  628  ls
+  629  ./bin/connect-distributed.sh  ./config/connect-distributed.properties 
+  630  vi  ./config/connect-distributed.properties 
+  631  ls
+  632  cd logs/
+  633  ls
+  634  jps
+  635  kill -9 23581
+  636  kill -9 23897
+  637  kill -9 22656
+  638  kill -9 22265
+  639  jps
+  640  ls
+  641  rm *
+  642  ls
+  643  cd ../
+  644  ls
+  645  cd ../
+  646  ls
+  647  cd /tmp/
+  648  ls
+  649  cd kafka-logs/
+  650  ls
+  651  rm *
+  652  rm -rf *
+  653  ls
+  654  cd ../
+  655  ls
+  656  cd zookeeper/
+  657  ls
+  658  cd version-2/
+  659  ls
+  660  rm *
+  661  ls
+  662  cd ../../
+  663  ls
+  664  cd ../
+  665  ls
+  666  cd /home/cotlab/kafka_2.11-2.0.0/
+  667  ls
+  668  jps
+  669  ./bin/zookeeper-server-start.sh -daemon ./config/zookeeper.properties 
+  670  jps
+  671  ./bin/kafka-server-start.sh -daemon ./config/server.properties 
+  672  jps
+  673  ls
+  674  cd bin
+  675  ls
+  676  cd ../../
+  677  ls
+  678  cd MirrorLake-master/
+  679  ls
+  680  cd target/
+  681  ls
+  682  cd ../
+  683  ls
+  684  cd ../
+  685  jps
+  686  cd kafka_2.11-2.0.0/
+  687  ./bin/connect-distributed.sh ./config/connect-distributed.properties 
+  688  ./bin/zookeeper-server-start.sh -daemon ./config/zookeeper.properties 
+  689  jps
+  690  ./bin/kafka-server-start.sh -daemon ./config/server.properties 
+  691  jps
+  692  ./bin/connect-distributed.sh ./config/connect-distributed.properties 
+  693  cd ../
+  694  cd flink-1.12.0/
+  695  ls
+  696  ./bin/start-cluster.sh 
+  697  cd ../
+  698  cd kafka_2.11-2.0.0/bin/
+  699  cd ../
+  700  ./bin/kafka-topics.sh --zookeeper localhost:2181 --list
+  701  ifconfig
+  702  ./bin/kafka-topics.sh --zookeeper localhost:2181 --list
+  703  cd config/
+  704  vi server.properties 
+  705  jps
+  706  kill -9 3930
+  707  jps
+  708  ../
+  709  cd ../
+  710  ./bin/kafka-server-start.sh ./config/server.properties 
+  711  ./bin/kafka-topics.sh --zookeeper localhost:2181 --list
+  712  ./bin/connect-distributed.sh ./config/connect-distributed.properties 
+  713  ls
+  714  history
+  715  history > history.txt
