@@ -43,7 +43,7 @@ def simulateSensorData(boom_angle):
   elif avgAngleDiff > 2:           # boom is lifting
     result_angle = boom_angle + 10
 
-  return str(result_angle)
+  return result_angle
 
 def publishSimulationResult(result_angle):
   current_time = time.time() * 1000
@@ -60,20 +60,25 @@ def test_method():
    # get the base64 encoded string
    key1 = request.json['sensor1_value']
    key2 = request.json['sensor2_value']
+   sensor1_rowtime = request.json['sensor1_rowtime'] 
    print("key1: ", key1)
    print("key2: ", key2)
 
-   sim_result1 = publishSimulationResult(simulateSensorData(int(key1)))
-   sim_result2 = publishSimulationResult(simulateSensorData(int(key2)))
+   sim_result1 = simulateSensorData(int(key1))
+   sim_result2 = simulateSensorData(int(key2))
    
-
+   # {time:sensor1_time, input:{1_id, 1_val, 2_id, 2_val}, result:{1_res, 2_res}}
    #result = json.dumps(sim_result, ensure_ascii=False)
    #res = make_response(result)
-   print("sensor1 res: " , sim_result1)
+   print("sensor1 res: " , sim_result1, type(sim_result1))
    print("sensor2 res: " , sim_result2)
-
-   return sim_result1
+   #print("time: ", sensor1_rowtime, "input: [", request.json['sensor1_id'],  request.json['sensor1_value'], request.json['sensor2_id'],  request.json['sensor2_value'],"], result: [", sim_result1 , sim_result2, "]")
+   print(json.dumps({"time": sensor1_rowtime, "input": {request.json['sensor1_id']: sim_result1, request.json['sensor2_id']: sim_result2}, "result": [sim_result1 , sim_result2]}))
+   print(json.dumps({request.json['sensor1_id']: sim_result1, request.json['sensor2_id']: sim_result2}))
+   resultJson = json.dumps({"time": sensor1_rowtime, "input": {request.json['sensor1_id']: sim_result1, request.json['sensor2_id']: sim_result2}, "result": [sim_result1 , sim_result2]})
   
+   return resultJson
+
   
 def run_server_api():
    app.run(host='0.0.0.0', port=7972)
