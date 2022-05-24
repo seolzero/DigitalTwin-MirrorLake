@@ -58,16 +58,21 @@ def test_method():
    #    abort(400)
             
    # get the base64 encoded string
-   key = request.json['con']
-   print("key: ", key)
+   key1 = request.json['sensor1_value']
+   key2 = request.json['sensor2_value']
+   print("key1: ", key1)
+   print("key2: ", key2)
 
-   sim_result = publishSimulationResult(simulateSensorData(int(key)))
+   sim_result1 = publishSimulationResult(simulateSensorData(int(key1)))
+   sim_result2 = publishSimulationResult(simulateSensorData(int(key2)))
    
 
    #result = json.dumps(sim_result, ensure_ascii=False)
    #res = make_response(result)
-   print("res: " , sim_result)
-   return sim_result
+   print("sensor1 res: " , sim_result1)
+   print("sensor2 res: " , sim_result2)
+
+   return sim_result1
   
   
 def run_server_api():
