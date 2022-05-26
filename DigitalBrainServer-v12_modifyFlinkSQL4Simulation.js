@@ -1143,7 +1143,7 @@ function ServiceHttpSinkConnector(resObject) {
          "request.method": "POST",
          topics: topics,
          "response.topic": `Service_${resObject.name}`,
-         "kakfa.api.url": `${config.kafkaHost}`,
+         "kafka.api.url": `${config.kafkaHost}`,
       },
    };
 
@@ -1272,7 +1272,7 @@ function SimulationHttpSinkConnector(resObject) {
          "request.method": "POST",
          topics: topics,
          "response.topic": `SIM_${resObject.name}`,
-         "kakfa.api.url": `${config.kafkaHost}`,
+         "kafka.api.url": `${config.kafkaHost}`,
       },
    };
 
