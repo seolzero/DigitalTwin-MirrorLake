@@ -62,9 +62,11 @@ def test_method():
    key2 = request.json['sensor2_value']
    sensor1_rowtime = request.json['sensor1_rowtime'] 
 
-   sim_result1 = simulateSensorData(int(key1))
-   sim_result2 = simulateSensorData(int(key2))
-   
+   try:
+      sim_result1 = simulateSensorData(int(key1))
+      sim_result2 = simulateSensorData(int(key2))
+   except:
+      print("An exception occurred")
    # {time:sensor1_time, input:{1_id, 1_val, 2_id, 2_val}, result:{1_res, 2_res}}
    #result = json.dumps(sim_result, ensure_ascii=False)
    #res = make_response(result)

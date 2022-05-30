@@ -41,7 +41,10 @@ def test_method():
    img_bytes = base64.b64decode(str_new)
 
    # convert bytes data to PIL Image object
-   img = Image.open(io.BytesIO(img_bytes))
+   try:
+      img = Image.open(io.BytesIO(img_bytes))
+   except:
+      print("An exception occurred")
 
    # PIL image object to numpy array
    img_arr = np.asarray(img)      
