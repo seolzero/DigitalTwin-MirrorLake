@@ -111,7 +111,7 @@ function create_flink_sensor_table(sensorName) {
    let createTableSQL = {
       statement: `CREATE TABLE ${sensorName}(\`tmp\` BIGINT, \`sensor_id\` STRING, \`sensor_value\` STRING, \`sensor_rowtime\` TIMESTAMP(3) METADATA FROM 'timestamp',  WATERMARK FOR sensor_rowtime AS sensor_rowtime, PRIMARY KEY (tmp) NOT ENFORCED) WITH ('connector' = 'upsert-kafka', 'topic' = '${sensorName}', 'properties.bootstrap.servers' = '${config.kafkaHost}', 'key.format' = 'json','value.format' = 'json')`,
    };
-
+   console.log(createTableSQL)
    //Send Request to sql-gateway Server
    var request = http.request(gwOptions, function (response) {
       let fullBody = "";

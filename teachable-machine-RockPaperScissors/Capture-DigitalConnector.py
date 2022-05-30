@@ -22,18 +22,16 @@ while cap.isOpened():
     payload = json.dumps({"data": jpg_as_text})
     #print(payload)
     cv2.imshow('img_roi', img)
-    key = cv2.waitKey(3000)
+    key = cv2.waitKey(5000)
 
 
-    url = "http://localhost:1220/DigitalConnector/SensorGroup/RSPcapture"
+    url = "http://localhost:1220/DigitalConnector/SensorGroup/rsp02"
     headers = {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
     }
     response = requests.request("POST", url, headers=headers, data=payload)
     print(response) 
-
-    
 
     if key == 27: #esc
         break

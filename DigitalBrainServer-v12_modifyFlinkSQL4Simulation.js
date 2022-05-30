@@ -59,7 +59,7 @@ function create_flink_DO_table(DOobject) {
    console.log(sensorList);
 
    if (sensorList.length == 1) {
-      createStreamSQL.statement = `CREATE TABLE ${DOName}(\`sensor_id\` STRING,\`sensor_value\` STRING, \`sensor_rowtime\` TIMESTAMP(3)) WITH ('connector' = 'kafka', 'topic' = 'DO_${DOName}','properties.bootstrap.servers' = '${config.kafkaHost}', 'format'='json')`;
+      createStreamSQL.statement = `CREATE TABLE ${DOName}(tmpA BIGINT, sensor1_id STRING, sensor1_value STRING, sensor1_rowtime TIMESTAMP(3), PRIMARY KEY (tmpA) NOT ENFORCED) WITH ('connector' = 'upsert-kafka', 'topic' = 'DO_${DOName}','properties.bootstrap.servers' = '${config.kafkaHost}', 'key.format' = 'json', 'value.format' = 'json')`;
    } else {
       createStreamSQL.statement = `CREATE TABLE ${DOName} (tmpA BIGINT, sensor1_rowtime TIMESTAMP(3), `;
 
@@ -77,7 +77,7 @@ function create_flink_DO_table(DOobject) {
    };
 
    if (sensorList.length == 1) {
-      insertTableSQL.statement += `sensor_id, sensor_value, sensor_rowtime FROM ${sensorList[0]}`;
+      insertTableSQL.statement += `${sensorList[0]}.tmp, ${sensorList[0]}.sensor_id, ${sensorList[0]}.sensor_value, ${sensorList[0]}.sensor_rowtime FROM ${sensorList[0]}`;
    } else {
       insertTableSQL.statement += `${sensorList[0]}.tmp, ${sensorList[0]}.sensor_rowtime, `;
 

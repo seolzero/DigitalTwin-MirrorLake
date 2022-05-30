@@ -25,17 +25,20 @@ rock = 'rock'
 scissors = 'scissors' 
 paper = 'paper'
 
-@app.route("/test", methods=['POST'])
+@app.route("/RSP", methods=['POST'])
 def test_method():         
    # print(request.json)      
-   if not request.json or 'con' not in request.json: 
-      abort(400)
+   if not request.json or 'sensor1_value' not in request.json: 
+      abort(400, 'json key not exist')
             
    # get the base64 encoded string
-   im_b64 = request.json['con']
-
+   im_b64 = request.json['sensor1_value']
+   rowtime = request.json['sensor1_rowtime']
+   
+   str_new = im_b64 + '=' * (4 - len(im_b64) % 4)
+   
    # convert it into bytes  
-   img_bytes = base64.b64decode(im_b64.encode('utf-8'))
+   img_bytes = base64.b64decode(str_new)
 
    # convert bytes data to PIL Image object
    img = Image.open(io.BytesIO(img_bytes))
@@ -74,8 +77,8 @@ def test_method():
    })
    #requests.request("POST", url, headers=headers, data=payload)
 
-   result_dict = {'output': classes[idx]}
-   print("result_dict: " + classes[idx])
+   result_dict = {'input': { request.json['sensor1_id']:classes[idx]}, 'result': { request.json['sensor1_id']:ret}, 'rowtime': rowtime}
+   #print("result_dict: " + classes[idx])
    return result_dict
   
   
