@@ -24,7 +24,7 @@ while cap.isOpened():
     payload = json.dumps({"data": jpg_as_text})
     #print(payload)
     cv2.imshow('img_roi', img)
-    key = cv2.waitKey(1000)
+    key = cv2.waitKey(300)
 
 
     url = "http://localhost:1220/DigitalConnector/SensorGroup/CD"

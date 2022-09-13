@@ -1,22 +1,27 @@
-const express = require("express");
+const express = require('express');
 const app = express();
+const http = require("http");
+const port = 1209;
 
-const port = 1203;
-app.listen(port, () =>
-   console.log(`Example app listening at ${port}`)
+// body parser
+app.use(express.json());
+app.use(
+   express.urlencoded({
+      extended: true,
+   })
 );
 
-app.post("*", (req, res) => {
-   var fullBody = "";
-   req.on("data", function (chunk) {
-      fullBody += chunk;
-   });
+const server = http.createServer(app);
+server.listen(port, () => {
+   console.log(`Server Start on port ${port}`);
+});
+   
+   
+app.post('/receiver' ,function(req, res){
 
-   req.on("end", function () {
-      res.status(200).send("post /end test ok");
-      var receivedData = JSON.parse(fullBody);
-      //var rep = receivedData['m2m:sgn'].nev.rep;
-      console.log("> receivedData: ", receivedData);
-      //console.log("> rep: ", rep);
-   });
+   console.log(req.body);
+
+   res.end();
+
+
 });

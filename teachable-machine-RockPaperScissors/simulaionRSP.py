@@ -44,11 +44,7 @@ def test_method():
    try:
       img = Image.open(io.BytesIO(img_bytes))
    except:
-<<<<<<< HEAD
-      print("cannot identify image file")
-=======
       print("An exception occurred")
->>>>>>> 6869fb4ac2d126648c10303e340bc9062813abf1
 
    # PIL image object to numpy array
    img_arr = np.asarray(img)      

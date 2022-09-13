@@ -1,0 +1,140 @@
+./bin/kafka-topics.sh --zookeeper localhost:2181 --list
+bin/kafka-topics.sh --list --bootstrap-server localhost:9092
+.\kafka-console-producer.sh --topic test-create --bootstrap-server localhost:9092
+./kafka-console-consumer.sh --bootstrap-server localhost:9092 --from-beginning  --topic DO_DOte7
+
+# 주소설정
+cotlab@DESKTOP-MEJSM5H:~$ vi kafka_2.13-2.5.0/config/server.properties
+cotlab@DESKTOP-MEJSM5H:~$ vi kafka_2.13-2.5.0/config/connect-distributed.properties
+cotlab@DESKTOP-MEJSM5H:~$ vi flink-sql-gateway-flink-1.12.0/build-target/conf/sql-gateway-defaults.yaml
+C:\workspace\DigitalTwin-MirrorLake\configs.json
+
+##### WSL Ubuntu 
+# 로그삭제
+rm -rf flink-1.12.0/log/*
+rm -rf /tmp/zookeeper/version-2/*
+rm -rf /tmp/kafka-logs/* kafka_2.13-2.5.0/logs/*
+rm -rf kafka_2.13-2.5.0/logs/*
+
+rm -rf flink-1.12.0/log/* kafka_2.13-2.5.0/logs/* /tmp/zookeeper/version-2/* /tmp/kafka-logs/* kafka_2.13-2.5.0/logs/*
+
+# kafka 실행
+kafka_2.13-2.5.0/bin/zookeeper-server-start.sh -daemon config/zookeeper.properties
+kafka_2.13-2.5.0/bin/kafka-server-start.sh -daemon config/server.properties
+kafka_2.13-2.5.0/bin/connect-distributed.sh config/connect-distributed.properties
+
+bin/zookeeper-server-start.sh -daemon config/zookeeper.properties 
+bin/kafka-server-start.sh -daemon config/server.properties
+bin/connect-distributed.sh config/connect-distributed.properties
+
+# flink 실행
+flink-1.12.0/bin/start-cluster.sh
+flink-sql-gateway-flink-1.12.0/build-target/bin/sql-gateway.sh
+
+##### Window Terminal
+# DigitalBrain & DigitalConnector 실행
+위치: C:\workspace\DigitalTwin-MirrorLake
+node .\DigitalBrainServer-v12_modifyFlinkSQL4Simulation.js
+node .\DigitalConnector-v5_monifyFlinkSQL.js
+
+## simulation 실행
+### crain simulation 실행
+C:\workspace\DigitalTwin-MirrorLake> python .\simulationCrain.py
+
+### collision detection simulation 실행(miniconda 사용)
+(base) C:\Users\jkim8>activate RSP
+(RSP) C:\workspace\DigitalTwin-MirrorLake\teachable-machine-stable-collision>python simulationCD.py
+
+### collision detection을 위한 image data capture(open-cv) 
+C:\workspace\DigitalTwin-MirrorLake\teachable-machine-stable-collision>python Capture-DigitalConnector.py
+
+# Sensor 생성
+http://localhost:1220/DigitalConnector/SensorGroup
+heading, angle, CD
+
+# DO 생성
+localhost:1005/DigitalTwin/DO
+```
+{
+  "name": "DOcrns",
+  "sensor": [
+    "angle", "heading"
+  ]
+}
+```
+{
+  "name": "DOcd",
+  "sensor": [
+    "CD"
+  ]
+}
+```
+
+# Simulation 생성
+localhost:1005/DigitalTwin/simulationGroup
+{
+  "name": "SIcrns02",
+  "arg": {  "DOcrns02": {    "angle": {      "dim": [28, 28]    }, "heading": {      "dim": [28, 28]    }  }},
+  "url": "http://192.168.1.116:7972/sim"
+} 
+
+{
+  "name": "SIcd020",
+  "arg": { "DOcd020": { "CD": {      "dim": [28, 28]    }}},
+  "url": "http://192.168.1.116:8080/CD"
+}
+
+## simulation trigger
+localhost:1005/DigitalTwin/simulationRTtrigger/SIcrns02
+localhost:1005/DigitalTwin/simulationRTtrigger/SIcd020
+
+# Service 생성
+localhost:1005/DigitalTwin/serviceGroup
+{
+  "name": "SEcrn020",
+  "DO_arg": {"DOcrns02":{"angle":{"dim":[28,28]},"heading":{"dim":[1]}}},
+  "SIM_arg":{"SIcrns02":""},
+  "url": "mqtt://192.168.1.116:1883"
+}
+{
+  "name": "SEcd020",
+  "DO_arg": {"DOcd020":{"CD":{"dim":[28,28]}}},
+  "SIM_arg":{"SIcd020":""},
+  "url": "mqtt://192.168.1.116:1883"
+}
+
+## Service trigger
+localhost:1005/DigitalTwin/service/trigger/SEcd020
+localhost:1005/DigitalTwin/service/trigger/SEcrn020
+
+
+
+=======================
+Setting scale to +/- 1.3 Ga
+Entered scale was not valid, valid gauss values are: 0.88, 1.3, 1.9, 2.5, 4.0, 4.7, 5.6, 8.1
+Setting measurement mode to continous.
+Initialize Ethernet with DHCP:
+Failed to configure Ethernet using DHCP
+Ethernet cable is not connected.
+69
+
+Setting scale to +/- 1.3 Ga
+Entered scale was not valid, valid gauss values are: 0.88, 1.3, 1.9, 2.5, 4.0, 4.7, 5.6, 8.1
+Setting measurement mode to continous.
+Initialize Ethernet with DHCP:
+Failed to configure Ethernet using DHCP
+Ethernet cable is not connected.
+68
+----------
+root: 1
+jsonData: {"data":40}
+>> sent 1, angle  root: 1
+jsonData: {"data":68}
+>> sent 2, heading
+69
+----------
+root: 1
+jsonData: {"data":40}
+>> sent 1, angle  root: 1
+jsonData: {"data":69}
+>> sent 2, heading

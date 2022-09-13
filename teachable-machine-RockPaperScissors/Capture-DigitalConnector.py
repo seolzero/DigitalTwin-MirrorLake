@@ -25,7 +25,7 @@ while cap.isOpened():
     key = cv2.waitKey(5000)
 
 
-    url = "http://localhost:1220/DigitalConnector/SensorGroup/rsp02"
+    url = "http://localhost:1220/DigitalConnector/SensorGroup/CD"
     headers = {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
