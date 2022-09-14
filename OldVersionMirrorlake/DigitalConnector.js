@@ -111,7 +111,7 @@ function create_flink_sensor_table(sensorName) {
    let createTableSQL = {
       statement: `CREATE TABLE ${sensorName}(\`tmp\` BIGINT, \`sensor_id\` STRING, \`sensor_value\` STRING, \`sensor_rowtime\` TIMESTAMP(3) METADATA FROM 'timestamp',  WATERMARK FOR sensor_rowtime AS sensor_rowtime, PRIMARY KEY (tmp) NOT ENFORCED) WITH ('connector' = 'upsert-kafka', 'topic' = '${sensorName}', 'properties.bootstrap.servers' = '${config.kafkaHost}', 'key.format' = 'json','value.format' = 'json')`,
    };
-   console.log(createTableSQL);
+   console.log(createTableSQL)
    //Send Request to sql-gateway Server
    var request = http.request(gwOptions, function (response) {
       let fullBody = "";
@@ -312,82 +312,6 @@ app.put("/DigitalConnector/SensorGroup", function (req, res) {
    });
 });
 
-
-/**
- * oneM2M subscription notification & save sensor Data
- * contentInstance = {"id":"cotlab.sensor.008","temperature":25.21999931,"humidity":50.58000183}
- * send to kafka = { tmp: 1, sensor_id: 'cotlab.sensor.008', sensor_value: 25.21999931 }
- */
- app.post("/noti_sub", function (req, res) {
-   var fullBody = "",
-      jsonbody;
-   req.on("data", function (chunk) {
-      fullBody += chunk;
-   });
-
-   req.on("end", function () {
-      try {
-         jsonbody = JSON.parse(fullBody);
-         console.log(util.inspect(jsonbody, false, null, true));
-      } catch (e) {
-         console.error(e);
-         res.status(200).send("Error : Not valid Json format");
-         return;
-      }
-
-      if (jsonbody["m2m:sgn"]?.nev?.rep["m2m:cin"]) {
-         const contentInstance = jsonbody["m2m:sgn"].nev.rep["m2m:cin"].con;
-         console.log(util.inspect(contentInstance, false, null, true));
-
-         if (contentInstance?.id) {
-            const MQ = await getMessageQueList(contentInstance.id).then(
-               function (MQ) {
-                  return MQ;// MQ: ["kafka","mqtt"]
-               }
-            );
-            if (MQ == null) {
-               res.status(200).send("Unregistered sensor.");
-            } else {
-               res.status(200).send("ok");
-               for (let index of JSON.parse(MQ)) {
-                  switch (index) {
-                     case "kafka":
-                        console.log("send to kafka ", contentInstance);
-                        const valueObjectMessage = {
-                           tmp: 1,
-                           sensor_id: contentInstance.id,
-                           sensor_value: contentInstance.temperature,
-                        };
-                        const kafkaKey = { tmp: 1 };
-                        kafkaProducer(
-                           contentInstance.id,
-                           JSON.stringify(kafkaKey),
-                           JSON.stringify(valueObjectMessage)
-                        ); //string
-                        break;
-                     case "mqtt":
-                        console.log("send to mqtt ", contentInstance);
-                        break;
-                  }
-               }
-            }
-         } else {
-            res.status(500).send("please check mandatory field");
-         }
-
-      } else {
-         console.log(
-            "m2m:cin does not exist. check DataBody: ",
-            util.inspect(jsonbody, false, null, true)
-         );
-         res.status(200).send("Received Data (sur does not exist)");
-      }
-   });
-});
-
-
-
-
 /*
  * sensor Data Creation
  */
@@ -402,7 +326,7 @@ app.post("/DigitalConnector/SensorGroup/:sensorName", function (req, res) {
       if (!req.params?.sensorName) {
          res.status(500).send("please check sensorName parameter");
       }
-      const messageObject = fullBody;
+      let messageObject = fullBody;
       if (tryJSONparse(messageObject)) {
          sensorNameObj = tryJSONparse(messageObject);
          if (sensorNameObj?.data) {
@@ -420,12 +344,8 @@ app.post("/DigitalConnector/SensorGroup/:sensorName", function (req, res) {
                   switch (index) {
                      case "kafka":
                         console.log("send to kafka ", sensorNameObj.data);
-                        const valueObjectMessage = {
-                           tmp: 1,
-                           sensor_id: req.params.sensorName,
-                           sensor_value: sensorNameObj.data,
-                        };
-                        const kafkaKey = { tmp: 1 };
+                        const valueObjectMessage = { tmp: 1, sensor_id: req.params.sensorName, sensor_value: sensorNameObj.data };
+                        const kafkaKey = {tmp: 1};
                         kafkaProducer(
                            req.params.sensorName,
                            JSON.stringify(kafkaKey),
