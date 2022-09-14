@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 const http = require("http");
-const port = 1209;
+const port = 1203;
 
 // body parser
 app.use(express.json());
@@ -17,7 +17,7 @@ server.listen(port, () => {
 });
    
    
-app.post('/receiver' ,function(req, res){
+app.post('/simt' ,function(req, res){
 
    console.log(req.body);
 
