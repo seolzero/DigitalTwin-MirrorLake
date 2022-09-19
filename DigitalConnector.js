@@ -109,7 +109,7 @@ function create_flink_sensor_table(sensorName) {
    gwOptions.method = POST;
 
    let createTableSQL = {
-      statement: `CREATE TABLE ${sensorName}(\`tmp\` BIGINT, \`sensor_id\` STRING, \`sensor_value\` STRING, \`sensor_rowtime\` TIMESTAMP(3) METADATA FROM 'timestamp',  WATERMARK FOR sensor_rowtime AS sensor_rowtime, PRIMARY KEY (tmp) NOT ENFORCED) WITH ('connector' = 'upsert-kafka', 'topic' = '${sensorName}', 'properties.bootstrap.servers' = '${config.kafkaHost}', 'key.format' = 'json','value.format' = 'json')`,
+      statement: `CREATE TABLE ${sensorName}(\`tmp\` BIGINT, \`sensor_id\` STRING, \`sensor_value\` STRING, \`sensor_rowtime\` TIMESTAMP(3) METADATA FROM 'timestamp',  WATERMARK FOR sensor_rowtime AS sensor_rowtime - INTERVAL '2' MINUTE, PRIMARY KEY (tmp) NOT ENFORCED) WITH ('connector' = 'upsert-kafka', 'topic' = '${sensorName}', 'properties.bootstrap.servers' = '${config.kafkaHost}', 'key.format' = 'json','value.format' = 'json')`,
    };
    console.log(createTableSQL);
    //Send Request to sql-gateway Server
@@ -325,7 +325,7 @@ app.put("/DigitalConnector/SensorGroup", function (req, res) {
       fullBody += chunk;
    });
 
-   req.on("end", function () {
+   req.on("end", async function () {
       try {
          jsonbody = JSON.parse(fullBody);
          console.log(util.inspect(jsonbody, false, null, true));
@@ -340,7 +340,7 @@ app.put("/DigitalConnector/SensorGroup", function (req, res) {
          console.log(util.inspect(contentInstance, false, null, true));
 
          if (contentInstance?.id) {
-            const MQ = getMessageQueList(req.params.sensorName).then(
+            const MQ = await getMessageQueList(req.params.sensorName).then(
                function (MQ) {
                   return MQ;// MQ: ["kafka","mqtt"]
                }

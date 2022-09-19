@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const http = require("http");
 const port = 1203;
-
+const util = require('util');
 // body parser
 app.use(express.json());
 app.use(
@@ -20,7 +20,7 @@ server.listen(port, () => {
 app.post('/simt' ,function(req, res){
 
    console.log(req.body);
-
+   console.log(util.inspect(req.body, false, null, true));
    res.end();
 
 

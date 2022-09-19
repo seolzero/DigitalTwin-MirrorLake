@@ -1144,7 +1144,6 @@ function ServiceHttpSinkConnector(resObject) {
       config: {
          "connector.class": "uk.co.threefi.connect.http.HttpSinkConnector",
          "tasks.max": "1",
-         "request.method": "",
          headers: "Content-Type:application/json|Accept:application/json",
          "key.converter": "org.apache.kafka.connect.storage.StringConverter",
          "value.converter": "org.apache.kafka.connect.storage.StringConverter",
@@ -1152,7 +1151,8 @@ function ServiceHttpSinkConnector(resObject) {
          "request.method": "POST",
          topics: topics,
          "response.topic": `Service_${resObject.name}`,
-         "kafka.api.url": `${config.kafkaHost}`,
+         "kafka.api.url": `${config.kafkaHost}`,         
+         "batch.max.size": 1,
       },
    };
 
@@ -1273,7 +1273,6 @@ function SimulationHttpSinkConnector(resObject) {
       config: {
          "connector.class": "uk.co.threefi.connect.http.HttpSinkConnector",
          "tasks.max": "1",
-         "request.method": "",
          headers: "Content-Type:application/json|Accept:application/json",
          "key.converter": "org.apache.kafka.connect.storage.StringConverter",
          "value.converter": "org.apache.kafka.connect.storage.StringConverter",
@@ -1282,6 +1281,7 @@ function SimulationHttpSinkConnector(resObject) {
          topics: topics,
          "response.topic": `SIM_${resObject.name}`,
          "kafka.api.url": `${config.kafkaHost}`,
+         "batch.max.size": 512,
       },
    };
 
