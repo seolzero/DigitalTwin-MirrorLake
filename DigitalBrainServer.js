@@ -1,13 +1,14 @@
 const config = require("./configs.json");
 const express = require("express");
 const app = express();
-var unirest = require("unirest");
+const axios = require("axios");
+const unirest = require("unirest");
 const util = require("util");
 const where = require("lodash.where");
 const { DateTime } = require("luxon");
 const mqtt = require("mqtt");
-app.listen(1005, () => {
-   console.log("Server Start on port 1005");
+app.listen(1209, () => {
+   console.log("Server Start on port 1209");
 });
 const { tryJSONparse } = require("./lib");
 let Options = config.ksqlOptions;
@@ -59,9 +60,9 @@ function create_flink_DO_table(DOobject) {
    console.log(sensorList);
 
    if (sensorList.length == 1) {
-      createStreamSQL.statement = `CREATE TABLE ${DOName}(tmpA BIGINT, ${sensorList[0]} STRING, rowtime TIMESTAMP(0), PRIMARY KEY (tmpA) NOT ENFORCED) WITH ('connector' = 'upsert-kafka', 'topic' = 'DO_${DOName}','properties.bootstrap.servers' = '${config.kafkaHost}', 'key.format' = 'json', 'value.format' = 'json')`;
+      createStreamSQL.statement = `CREATE TABLE ${DOName}(tmpA BIGINT, name STRING, value STRING, timestamp TIMESTAMP(3), PRIMARY KEY (tmpA) NOT ENFORCED) WITH ('connector' = 'upsert-kafka', 'topic' = 'DO_${DOName}','properties.bootstrap.servers' = '${config.kafkaHost}', 'key.format' = 'json', 'value.format' = 'json')`;
    } else {
-      createStreamSQL.statement = `CREATE TABLE ${DOName} (tmpA BIGINT, rowtime TIMESTAMP(0), `;
+      createStreamSQL.statement = `CREATE TABLE ${DOName} (tmpA BIGINT, name STRING, timestamp TIMESTAMP(3), `;
 
       for (i = 0; i < sensorList.length; i++) {
          createStreamSQL.statement += `${sensorList[i]} STRING, `;
@@ -77,9 +78,9 @@ function create_flink_DO_table(DOobject) {
    };
 
    if (sensorList.length == 1) {
-      insertTableSQL.statement += `${sensorList[0]}.tmp, ${sensorList[0]}.sensor_value, ${sensorList[0]}.sensor_rowtime FROM ${sensorList[0]}`;
+      insertTableSQL.statement += `${sensorList[0]}.tmp, ${DOName}, ${sensorList[0]}.sensor_value, ${sensorList[0]}.sensor_rowtime FROM ${sensorList[0]}`;
    } else {
-      insertTableSQL.statement += `${sensorList[0]}.tmp, ${sensorList[0]}.sensor_rowtime, `;
+      insertTableSQL.statement += `${sensorList[0]}.tmp, ${DOName}, ${sensorList[0]}.sensor_rowtime, `;
 
       for (i = 0; i < sensorList.length; i++) {
          insertTableSQL.statement += `${sensorList[i]}.sensor_value `;
@@ -93,9 +94,9 @@ function create_flink_DO_table(DOobject) {
       for (i = 0; i < sensorList.length - 1; i++) {
          insertTableSQL.statement += `left join ${
             sensorList[i + 1]
-         } for system_time as of ${sensorList[i]}.sensor_rowtime on ${
+         } for system_time as of ${sensorList[0]}.sensor_rowtime on ${
             sensorList[i + 1]
-         }.tmp=${sensorList[i]}.tmp `;
+         }.tmp=${sensorList[0]}.tmp `;
       }
    }
 
@@ -267,6 +268,25 @@ app.delete("/DigitalTwin/:DOName", async (req, res) => {
       console.log("input value error");
    }
 });
+
+app.delete("/DigitalTwin/DO/all", (req, res) => {
+   Rclient.DEL("DO");
+   DONameListDelete();
+   res.send({ success: 1 });
+});
+
+async function DONameListDelete() {
+   let NameList = await getNameList("DO").then((List) => {
+      return List;
+   });
+   let flag = true;
+   return new Promise((resolve, reject) => {
+      for (i in NameList) {
+         Rclient.DEL(i);
+      }
+      resolve(flag);
+   });
+}
 
 /*
  * DO UPDATE
@@ -668,29 +688,35 @@ app.delete("/DigitalTwin/simulationGroup/:simulationName", async (req, res) => {
 
 function deleteSink(connectorName) {
    console.log("Delete Sink Connector");
-   options.method = DELETE;
-   options.path = `/connectors/${connectorName}`;
-   /**
-    * Send Request to Kafka Connect Server
-    */
-   var request = http.request(options, function (response) {
-      let fullBody = "";
+   var config = {
+      method: "delete",
+      url: `http://${kafkaConnectServer.hostname}:${kafkaConnectServer.port}/connectors/${connectorName}`,
+      headers: {},
+   };
 
-      response.on("data", function (chunk) {
-         fullBody += chunk;
+   axios(config)
+      .then(function (response) {
+         console.log(JSON.stringify(response.data));
+      })
+      .catch(function (error) {
+         console.log(error);
       });
-
-      response.on("end", function () {
-         console.log(fullBody);
-      });
-
-      response.on("error", function (error) {
-         console.error(error);
-      });
-   });
-   request.end();
 }
 
+app.delete("/DigitalTwin/simulationGroup/all", async (req, res) => {
+   Rclient.DEL("simulation");
+   let NameList = await getNameList("simulation").then((List) => {
+      return List;
+   });
+   new Promise((resolve, reject) => {
+      for (i in NameList) {
+         Rclient.DEL(i);
+      }
+      resolve(NameList);
+   });
+
+   res.send(NameList);
+});
 /*
  * simulation Trigger
  * RT: RealTime
@@ -1129,20 +1155,33 @@ async function CreateServiceSinkConnector(resObject) {
 }
 
 function ServiceHttpSinkConnector(resObject) {
-   let topicArg = resObject.arg;
-   let topics = "";
-   for (i in topicArg) {
-      topics += topicArg[i];
-      if (i != topicArg.length - 1) {
-         topics += ",";
+   const DOs = Object.keys(resObject.DO_arg); //[ 'DO1', 'DO2' ]
+   const SIMs = Object.keys(resObject.SIM_arg);
+   if (SIMs.length > 0) {
+      let SIM_SIMs = SIMs.map((s) => "SIM_" + s);
+      let topics = "";
+      for (i in SIM_SIMs) {
+         topics += SIM_SIMs[i];
+         if (i != SIM_SIMs.length - 1) {
+            topics += ",";
+         }
+      }
+   } else {
+      let DO_s = DOs.map((s) => "DO_" + s);
+      let topics = "";
+      for (i in DO_s) {
+         topics += DO_s[i];
+         if (i != DO_s.length - 1) {
+            topics += ",";
+         }
       }
    }
-   //console.log(topics);
 
    let sinkConnectorBody = {
       name: resObject.name,
       config: {
-         "connector.class": "uk.co.threefi.connect.http.HttpSinkConnector",
+         "connector.class":
+            "uk.co.threefi.connect.http.service.HttpSinkConnector",
          "tasks.max": "1",
          headers: "Content-Type:application/json|Accept:application/json",
          "key.converter": "org.apache.kafka.connect.storage.StringConverter",
@@ -1150,9 +1189,6 @@ function ServiceHttpSinkConnector(resObject) {
          "http.api.url": resObject.url,
          "request.method": "POST",
          topics: topics,
-         "response.topic": `Service_${resObject.name}`,
-         "kafka.api.url": `${config.kafkaHost}`,         
-         "batch.max.size": 1,
       },
    };
 
