@@ -312,81 +312,80 @@ app.put("/DigitalConnector/SensorGroup", function (req, res) {
    });
 });
 
+
 /**
  * oneM2M subscription notification & save sensor Data
  * contentInstance = {"id":"cotlab.sensor.008","temperature":25.21999931,"humidity":50.58000183}
  * send to kafka = { tmp: 1, sensor_id: 'cotlab.sensor.008', sensor_value: 25.21999931 }
  */
-app.post(
-   "/DigitalConnector/SensorGroup/:sensorName/noti_sub",
-   function (req, res) {
-      var fullBody = "",
-         jsonbody;
-      req.on("data", function (chunk) {
-         fullBody += chunk;
-      });
+ app.post("/DigitalConnector/SensorGroup/:sensorName/noti_sub", function (req, res) {
+   var fullBody = "",
+      jsonbody;
+   req.on("data", function (chunk) {
+      fullBody += chunk;
+   });
 
-      req.on("end", async function () {
-         try {
-            jsonbody = JSON.parse(fullBody);
-            //console.log(util.inspect(jsonbody, false, null, true));
-         } catch (e) {
-            console.error(e);
-            res.status(200).send("Error : Not valid Json format");
-            return;
-         }
+   req.on("end", async function () {
+      try {
+         jsonbody = JSON.parse(fullBody);
+         //console.log(util.inspect(jsonbody, false, null, true));
+      } catch (e) {
+         console.error(e);
+         res.status(200).send("Error : Not valid Json format");
+         return;
+      }
 
-         if (jsonbody["m2m:sgn"]?.nev?.rep["m2m:cin"]) {
-            const contentInstance = jsonbody["m2m:sgn"].nev.rep["m2m:cin"].con;
-            console.log(
-               "con: \n",
-               util.inspect(contentInstance, false, null, true)
+      if (jsonbody["m2m:sgn"]?.nev?.rep["m2m:cin"]) {
+         const contentInstance = jsonbody["m2m:sgn"].nev.rep["m2m:cin"].con;
+         console.log("con: \n", util.inspect(contentInstance, false, null, true));
+
+         if (contentInstance?.id) {
+            const MQ = await getMessageQueList(req.params.sensorName).then(
+               function (MQ) {
+                  return MQ;// MQ: ["kafka","mqtt"]
+               }
             );
-
-            if (contentInstance?.id) {
-               const MQ = await getMessageQueList(req.params.sensorName).then(
-                  function (MQ) {
-                     return MQ; // MQ: ["kafka","mqtt"]
-                  }
-               );
-               if (MQ == null) {
-                  res.status(200).send("Unregistered sensor.");
-               } else {
-                  res.status(200).send("ok");
-                  for (let index of JSON.parse(MQ)) {
-                     switch (index) {
-                        case "kafka":
-                           const valueObjectMessage = {
-                              tmp: 1,
-                              sensor_id: req.params.sensorName,
-                              sensor_value: contentInstance.temperature,
-                           };
-                           const kafkaKey = { tmp: 1 };
-                           kafkaProducer(
-                              req.params.sensorName,
-                              JSON.stringify(kafkaKey),
-                              JSON.stringify(valueObjectMessage)
-                           ); //string
-                           break;
-                        case "mqtt":
-                           console.log("send to mqtt ", contentInstance);
-                           break;
-                     }
+            if (MQ == null) {
+               res.status(200).send("Unregistered sensor.");
+            } else {
+               res.status(200).send("ok");
+               for (let index of JSON.parse(MQ)) {
+                  switch (index) {
+                     case "kafka":
+                        const valueObjectMessage = {
+                           tmp: 1,
+                           sensor_id: req.params.sensorName,
+                           sensor_value: contentInstance.temperature,
+                        };
+                        const kafkaKey = { tmp: 1 };
+                        kafkaProducer(
+                           req.params.sensorName,
+                           JSON.stringify(kafkaKey),
+                           JSON.stringify(valueObjectMessage)
+                        ); //string
+                        break;
+                     case "mqtt":
+                        console.log("send to mqtt ", contentInstance);
+                        break;
                   }
                }
-            } else {
-               res.status(500).send("please check mandatory field");
             }
          } else {
-            console.log(
-               "m2m:cin does not exist. check DataBody: ",
-               util.inspect(jsonbody, false, null, true)
-            );
-            res.status(200).send("Received Data (sur does not exist)");
+            res.status(500).send("please check mandatory field");
          }
-      });
-   }
-);
+
+      } else {
+         console.log(
+            "m2m:cin does not exist. check DataBody: ",
+            util.inspect(jsonbody, false, null, true)
+         );
+         res.status(200).send("Received Data (sur does not exist)");
+      }
+   });
+});
+
+
+
 
 /*
  * sensor Data Creation

@@ -7,7 +7,7 @@ const util = require("util");
 const where = require("lodash.where");
 const { DateTime } = require("luxon");
 const mqtt = require("mqtt");
-app.listen(1209, () => {
+app.listen(1005, () => {
    console.log("Server Start on port 1209");
 });
 const { tryJSONparse } = require("./lib");
@@ -60,9 +60,9 @@ function create_flink_DO_table(DOobject) {
    console.log(sensorList);
 
    if (sensorList.length == 1) {
-      createStreamSQL.statement = `CREATE TABLE ${DOName}(tmpA BIGINT, name STRING, value STRING, timestamp TIMESTAMP(3), PRIMARY KEY (tmpA) NOT ENFORCED) WITH ('connector' = 'upsert-kafka', 'topic' = 'DO_${DOName}','properties.bootstrap.servers' = '${config.kafkaHost}', 'key.format' = 'json', 'value.format' = 'json')`;
+      createStreamSQL.statement = `CREATE TABLE ${DOName}(tmpA BIGINT, name STRING, data STRING, rowtime TIMESTAMP(3), PRIMARY KEY (tmpA) NOT ENFORCED) WITH ('connector' = 'upsert-kafka', 'topic' = 'DO_${DOName}','properties.bootstrap.servers' = '${config.kafkaHost}', 'key.format' = 'json', 'value.format' = 'json')`;
    } else {
-      createStreamSQL.statement = `CREATE TABLE ${DOName} (tmpA BIGINT, name STRING, timestamp TIMESTAMP(3), `;
+      createStreamSQL.statement = `CREATE TABLE ${DOName} (tmpA BIGINT, name STRING, rowtime TIMESTAMP(3), `;
 
       for (i = 0; i < sensorList.length; i++) {
          createStreamSQL.statement += `${sensorList[i]} STRING, `;
@@ -78,9 +78,9 @@ function create_flink_DO_table(DOobject) {
    };
 
    if (sensorList.length == 1) {
-      insertTableSQL.statement += `${sensorList[0]}.tmp, ${DOName}, ${sensorList[0]}.sensor_value, ${sensorList[0]}.sensor_rowtime FROM ${sensorList[0]}`;
+      insertTableSQL.statement += `${sensorList[0]}.tmp, '${DOName}', ${sensorList[0]}.sensor_value, ${sensorList[0]}.sensor_rowtime FROM ${sensorList[0]}`;
    } else {
-      insertTableSQL.statement += `${sensorList[0]}.tmp, ${DOName}, ${sensorList[0]}.sensor_rowtime, `;
+      insertTableSQL.statement += `${sensorList[0]}.tmp, '${DOName}', ${sensorList[0]}.sensor_rowtime, `;
 
       for (i = 0; i < sensorList.length; i++) {
          insertTableSQL.statement += `${sensorList[i]}.sensor_value `;
@@ -703,7 +703,7 @@ function deleteSink(connectorName) {
       });
 }
 
-app.delete("/DigitalTwin/simulationGroup/all", async (req, res) => {
+app.delete("/DigitalTwin/simulation/all", async (req, res) => {
    Rclient.DEL("simulation");
    let NameList = await getNameList("simulation").then((List) => {
       return List;
@@ -1157,9 +1157,9 @@ async function CreateServiceSinkConnector(resObject) {
 function ServiceHttpSinkConnector(resObject) {
    const DOs = Object.keys(resObject.DO_arg); //[ 'DO1', 'DO2' ]
    const SIMs = Object.keys(resObject.SIM_arg);
+   let topics = "";
    if (SIMs.length > 0) {
       let SIM_SIMs = SIMs.map((s) => "SIM_" + s);
-      let topics = "";
       for (i in SIM_SIMs) {
          topics += SIM_SIMs[i];
          if (i != SIM_SIMs.length - 1) {
@@ -1168,7 +1168,6 @@ function ServiceHttpSinkConnector(resObject) {
       }
    } else {
       let DO_s = DOs.map((s) => "DO_" + s);
-      let topics = "";
       for (i in DO_s) {
          topics += DO_s[i];
          if (i != DO_s.length - 1) {
