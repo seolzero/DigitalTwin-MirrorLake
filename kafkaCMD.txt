@@ -26,10 +26,11 @@ kafka_2.13-2.5.0/bin/connect-distributed.sh config/connect-distributed.propertie
 bin/zookeeper-server-start.sh -daemon config/zookeeper.properties 
 bin/kafka-server-start.sh -daemon config/server.properties
 bin/connect-distributed.sh config/connect-distributed.properties
-
+(background 실행) nohup bin/connect-distributed.sh config/connect-distributed.properties
 # flink 실행
 flink-1.12.0/bin/start-cluster.sh
 flink-sql-gateway-flink-1.12.0/build-target/bin/sql-gateway.sh
+(background 실행) nohup flink-sql-gateway-flink-1.12.0/build-target/bin/sql-gateway.sh &
 
 ##### Window Terminal
 # DigitalBrain & DigitalConnector 실행
