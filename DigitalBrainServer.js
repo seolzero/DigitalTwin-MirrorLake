@@ -218,7 +218,7 @@ function CheckKeyExistAndAddCount(DOWholeData) {
 /*
  * DO Retrieve
  */
-app.get("/DigitalTwin/:DOName", async (req, res) => {
+app.get("/DigitalTwin/DO/:DOName", async (req, res) => {
    if (req.params.DOName) {
       let DOName = req.params.DOName;
       const flag = await checkNameExist(DOName, "DO").then(function (flag) {
@@ -250,7 +250,7 @@ app.get("/DigitalTwin/DO/list", async function (req, res) {
 /*
  * DO DELETE
  */
-app.delete("/DigitalTwin/:DOName", async (req, res) => {
+app.delete("/DigitalTwin/DO/:DOName", async (req, res) => {
    if (req.params.DOName) {
       let DOName = req.params.DOName;
       const flag = await checkNameExist(DOName, "DO").then(function (flag) {
@@ -497,7 +497,7 @@ app.delete("/DigitalTwin/serviceGroup/:serviceName", async (req, res) => {
 /*
  * service Trigger
  */
-app.post("/DigitalTwin/service/trigger/:serviceName", function (req, res) {
+app.post("/DigitalTwin/serviceGroup/trigger/:serviceName", function (req, res) {
    let fullBody = "",
       serviceName = "",
       resObject = {};
@@ -703,7 +703,7 @@ function deleteSink(connectorName) {
       });
 }
 
-app.delete("/DigitalTwin/simulation/all", async (req, res) => {
+app.delete("/DigitalTwin/simulationGroup/all", async (req, res) => {
    Rclient.DEL("simulation");
    let NameList = await getNameList("simulation").then((List) => {
       return List;
@@ -721,74 +721,24 @@ app.delete("/DigitalTwin/simulation/all", async (req, res) => {
  * simulation Trigger
  * RT: RealTime
  */
-app.post("/DigitalTwin/simulationRTtrigger/:simName", function (req, res) {
-   let fullBody = "",
-      simName = "",
-      resObject = {};
-   req.on("data", function (chunk) {
-      fullBody += chunk;
-   });
+app.post(
+   "/DigitalTwin/simulationGroup/RTtrigger/:simName",
+   function (req, res) {
+      let fullBody = "",
+         simName = "",
+         resObject = {};
+      req.on("data", function (chunk) {
+         fullBody += chunk;
+      });
 
-   req.on("end", async function () {
-      if (req.params.simName) {
-         simName = req.params.simName;
-      } else {
-         res.status(500).send("please check simName parameter");
-      }
-      if (req.params.simName) {
-         let simName = req.params.simName;
-         const flag = await checkNameExist(simName, "simulation").then(
-            function (flag) {
-               return flag;
-            }
-         );
-         if (flag) {
-            const keys = await getKeys(`simulation_${simName}`).then(function (
-               keys
-            ) {
-               return keys;
-            });
-            for (let key of keys) {
-               const value = await getValue(`simulation_${simName}`, key);
-               resObject[key] = value;
-            }
-            console.log(
-               `createRTSink: `,
-               util.inspect(resObject, false, null, true)
-            );
-            CreateSimulationSinkConnector(resObject);
-            res.status(200).send(resObject);
+      req.on("end", async function () {
+         if (req.params.simName) {
+            simName = req.params.simName;
          } else {
-            res.status(200).send("Unregistered simulation");
+            res.status(500).send("please check simName parameter");
          }
-      } else {
-         res.status(500).send("please check simName parameter");
-      }
-   });
-});
-
-/*
- * simulation Trigger
- * ST: Static Time
- */
-app.post("/DigitalTwin/simulationSTtrigger/:simName", function (req, res) {
-   let fullBody = "",
-      DataObject = "",
-      simName = "",
-      resObject = {};
-   req.on("data", function (chunk) {
-      fullBody += chunk;
-   });
-
-   req.on("end", async function () {
-      if (req.params.simName) {
-         simName = req.params.simName;
-      } else {
-         res.status(500).send("please check simName parameter");
-      }
-      if (tryJSONparse(fullBody)) {
-         DataObject = tryJSONparse(fullBody);
-         if (DataObject?.data) {
+         if (req.params.simName) {
+            let simName = req.params.simName;
             const flag = await checkNameExist(simName, "simulation").then(
                function (flag) {
                   return flag;
@@ -804,29 +754,85 @@ app.post("/DigitalTwin/simulationSTtrigger/:simName", function (req, res) {
                   const value = await getValue(`simulation_${simName}`, key);
                   resObject[key] = value;
                }
-               //resObject.url로 DataObject전송
                console.log(
-                  `createSTSink:  url => ${
-                     resObject.url
-                  } , data => ${util.inspect(DataObject.data)}`
+                  `createRTSink: `,
+                  util.inspect(resObject, false, null, true)
                );
-               //CreateSinkConnector(resObject);
-               res.status(200).send(
-                  `createSTSink:  url => ${
-                     resObject.url
-                  } , data => ${util.inspect(DataObject.data)}`
-               );
+               CreateSimulationSinkConnector(resObject);
+               res.status(200).send(resObject);
             } else {
                res.status(200).send("Unregistered simulation");
             }
          } else {
-            res.status(500).send("please check mandatory field");
+            res.status(500).send("please check simName parameter");
          }
-      } else {
-         res.status(500).send("is not a json structure");
-      }
-   });
-});
+      });
+   }
+);
+
+/*
+ * simulation Trigger
+ * ST: Static Time
+ */
+app.post(
+   "/DigitalTwin/simulationGroup/STtrigger/:simName",
+   function (req, res) {
+      let fullBody = "",
+         DataObject = "",
+         simName = "",
+         resObject = {};
+      req.on("data", function (chunk) {
+         fullBody += chunk;
+      });
+
+      req.on("end", async function () {
+         if (req.params.simName) {
+            simName = req.params.simName;
+         } else {
+            res.status(500).send("please check simName parameter");
+         }
+         if (tryJSONparse(fullBody)) {
+            DataObject = tryJSONparse(fullBody);
+            if (DataObject?.data) {
+               const flag = await checkNameExist(simName, "simulation").then(
+                  function (flag) {
+                     return flag;
+                  }
+               );
+               if (flag) {
+                  const keys = await getKeys(`simulation_${simName}`).then(
+                     function (keys) {
+                        return keys;
+                     }
+                  );
+                  for (let key of keys) {
+                     const value = await getValue(`simulation_${simName}`, key);
+                     resObject[key] = value;
+                  }
+                  //resObject.url로 DataObject전송
+                  console.log(
+                     `createSTSink:  url => ${
+                        resObject.url
+                     } , data => ${util.inspect(DataObject.data)}`
+                  );
+                  //CreateSinkConnector(resObject);
+                  res.status(200).send(
+                     `createSTSink:  url => ${
+                        resObject.url
+                     } , data => ${util.inspect(DataObject.data)}`
+                  );
+               } else {
+                  res.status(200).send("Unregistered simulation");
+               }
+            } else {
+               res.status(500).send("please check mandatory field");
+            }
+         } else {
+            res.status(500).send("is not a json structure");
+         }
+      });
+   }
+);
 //=======================================================================>> control
 
 /*
